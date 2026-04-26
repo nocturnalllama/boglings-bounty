@@ -57,6 +57,7 @@
             padding-right: 10px;
         }
 
+        /* Standardized Medieval Header (No Image) */
         h2 { 
             font-family: 'MedievalSharp', cursive; font-size: 1.7em; color: var(--accent); 
             border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; margin-bottom: 10px;
@@ -86,8 +87,8 @@
         details.plant-care summary { font-family: 'MedievalSharp', cursive; color: var(--accent); font-weight: bold; cursor: pointer; outline: none; }
         .care-list { margin: 10px 0 0 0; padding: 0; list-style: none; font-size: 0.82em; line-height: 1.6; color: #e0e0e0; }
         .care-list li { display: flex; align-items: center; margin-bottom: 6px; }
-        .status-icon { max-height: 18px; max-width: 18px; margin-right: 8px; image-rendering: pixelated; }
-        .potion-icon { max-height: 18px; max-width: 18px; margin-left: 8px; image-rendering: pixelated; }
+        .status-icon { max-height: 20px; max-width: 20px; margin-right: 8px; image-rendering: pixelated; }
+        .potion-icon { max-height: 20px; max-width: 20px; margin-left: 8px; image-rendering: pixelated; }
         .potion-text-green { color: #8bc34a; font-weight: bold; margin: 0 4px; }
         .potion-text-orange { color: #ffa502; font-weight: bold; margin: 0 4px; }
         .potion-text-yellow { color: #fbc531; font-weight: bold; margin: 0 4px; }
@@ -117,6 +118,7 @@
         .stage-pollinate { flex: 2; background: linear-gradient(to right, #d35400, #f39c12); border-right: 1px solid #000; }
         .stage-harvest { flex: 1; background: #27ae60; }
 
+        /* SCROLLABLE SECTION */
         .recipe-list { flex: 1; overflow-y: auto; padding-right: 12px; }
         .output-title { font-family: 'MedievalSharp', cursive; font-size: 1.05em; color: var(--accent); margin-bottom: 6px; }
         .output-text { font-size: 0.92em; line-height: 1.7; margin-bottom: 15px; color: #fff; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; border-left: 3px solid var(--accent); }
@@ -131,8 +133,16 @@
         .recipe-item { display: block; cursor: help; padding: 4px 5px; margin: 2px 0; border-bottom: 1px dotted rgba(255,255,255,0.2); }
         .recipe-item:hover { color: var(--accent); background: rgba(255,255,255,0.05); }
 
-        .recipe-tooltip { position: absolute; display: none; background: #0c110a; border: 2px solid var(--accent); padding: 10px; border-radius: 8px; z-index: 100; pointer-events: none; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.9); }
-        .recipe-tooltip img { background: #000; border: 1px solid var(--border); image-rendering: pixelated; }
+        /* PIXEL PERFECT TOOLTIP */
+        .recipe-tooltip { 
+            position: absolute; display: none; background: #0c110a; border: 2px solid var(--accent); 
+            padding: 10px; border-radius: 8px; z-index: 100; pointer-events: none; gap: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.9); align-items: center;
+        }
+        .recipe-tooltip img { 
+            background: #000; border: 1px solid var(--border); 
+            image-rendering: pixelated; 
+        }
 
         /* COLORS */
         .c-plain { color: #dcdde1; font-weight: bold; } .c-red { color: #c0392b; font-weight: bold; }
@@ -161,6 +171,7 @@
 <div class="app-container">
     <div class="controls-panel">
         <h2>The Bogling’s Bounty</h2>
+        
         <label>TARGET SPECIES</label>
         <select id="r_s">
             <optgroup label="Gen 1"><option value="Campion Flowers">Campion Flowers</option><option value="Fern">Fern</option><option value="Tribarrel Cactus">Tribarrel Cactus</option></optgroup>
@@ -223,21 +234,21 @@ function wc(c) { return `<span class="c-${c.toLowerCase().replace(" ", "-")}">${
 
 const uoPlants = { 1: "Campion Flowers", 2: "Snowdrops", 3: "Poppies", 4: "Bulrushes", 5: "Lilies", 6: "Pampas Grass", 7: "Rushes", 8: "Elephant Ear", 9: "Fern", 10: "Ponytail Palm", 11: "Small Palm", 12: "Century Plant", 13: "Water Plant", 14: "Snake Plant", 15: "Prickly Pear Cactus", 16: "Barrel Cactus", 17: "Tribarrel Cactus" };
 
-// EXHAUSTIVE COLOR RECIPE MAP
+// CORRECTED COLOR RECIPE MAP (Plain reset gene accurately represented)
 const fullColorRecipes = {
     "Plain": ["Plain + Any Color", "Gathered as Base Seed"],
     "Red": ["Red + Purple", "Red + Orange", "Red + Green", "Gathered as Base Seed"],
     "Blue": ["Blue + Purple", "Blue + Green", "Blue + Orange", "Gathered as Base Seed"],
     "Yellow": ["Yellow + Orange", "Yellow + Green", "Yellow + Purple", "Gathered as Base Seed"],
-    "Purple": ["Red + Blue", "Bright Red + Blue", "Red + Bright Blue", "Bright Red + Bright Blue", "Purple + Purple", "Purple + Plain"],
-    "Green": ["Blue + Yellow", "Bright Blue + Yellow", "Blue + Bright Yellow", "Bright Blue + Bright Yellow", "Green + Green", "Green + Plain"],
-    "Orange": ["Red + Yellow", "Bright Red + Yellow", "Red + Bright Yellow", "Bright Red + Bright Yellow", "Orange + Orange", "Orange + Plain"],
-    "Bright Red": ["Red + Red", "Red + Bright Red", "Bright Red + Bright Red", "Bright Red + Plain"],
-    "Bright Blue": ["Blue + Blue", "Blue + Bright Blue", "Bright Blue + Bright Blue", "Bright Blue + Plain"],
-    "Bright Yellow": ["Yellow + Yellow", "Yellow + Bright Yellow", "Bright Yellow + Bright Yellow", "Bright Yellow + Plain"],
-    "Bright Orange": ["Orange + Orange", "Orange + Bright Orange", "Bright Orange + Bright Orange", "Bright Orange + Plain"],
-    "Bright Green": ["Green + Green", "Green + Bright Green", "Bright Green + Bright Green", "Bright Green + Plain"],
-    "Bright Purple": ["Purple + Purple", "Purple + Bright Purple", "Bright Purple + Bright Purple", "Bright Purple + Plain"]
+    "Purple": ["Red + Blue", "Bright Red + Blue", "Red + Bright Blue", "Bright Red + Bright Blue", "Purple + Purple"],
+    "Green": ["Blue + Yellow", "Bright Blue + Yellow", "Blue + Bright Yellow", "Bright Blue + Bright Yellow", "Green + Green"],
+    "Orange": ["Red + Yellow", "Bright Red + Yellow", "Red + Bright Yellow", "Bright Red + Bright Yellow", "Orange + Orange"],
+    "Bright Red": ["Red + Red", "Red + Bright Red", "Bright Red + Bright Red"],
+    "Bright Blue": ["Blue + Blue", "Blue + Bright Blue", "Bright Blue + Bright Blue"],
+    "Bright Yellow": ["Yellow + Yellow", "Yellow + Bright Yellow", "Bright Yellow + Bright Yellow"],
+    "Bright Orange": ["Orange + Orange", "Orange + Bright Orange", "Bright Orange + Bright Orange"],
+    "Bright Green": ["Green + Green", "Green + Bright Green", "Bright Green + Bright Green"],
+    "Bright Purple": ["Purple + Purple", "Purple + Bright Purple", "Bright Purple + Bright Purple"]
 };
 
 const speciesPathMap = {
@@ -289,19 +300,14 @@ function getSpeciesRecipes(targetName) {
 function calculateReverse(isAutoLoad = false) {
     if(!isAutoLoad) playClick();
     const s = document.getElementById('r_s').value, c = document.getElementById('r_c').value;
-
     document.getElementById('r_resS').innerHTML = getSpeciesRecipes(s);
-    
-    // NEW: Full Valid Color Parents Logic
     let cList = fullColorRecipes[c].map(recipe => {
         let parts = recipe.split(" + ");
         if (parts.length === 2) return `<span class="recipe-item">&bull; ${wc(parts[0])} + ${wc(parts[1])}</span>`;
         return `<span class="recipe-item">&bull; ${recipe}</span>`;
     }).join("");
     document.getElementById('r_resC').innerHTML = cList;
-    
     document.getElementById('targetText').innerHTML = `${wc(c)} ${s}`;
-
     let path = speciesPathMap[s], fastHTML = "";
     if (!path.length) {
         fastHTML = ["Plain","Red","Blue","Yellow"].includes(c) ? `⭐ ${wc(c)} <b>${s}</b> seed via bogling` : `${wc(fastColorMap[c][0])} <b>${s}</b> x ${wc(fastColorMap[c][1])} <b>${s}</b> = ${wc(c)} <b>${s}</b>`;
@@ -319,7 +325,6 @@ function calculateReverse(isAutoLoad = false) {
         fastHTML += `<li>${wc(clrs[0])} <b>${prnts[0]}</b> x ${wc(clrs[1])} <b>${prnts[1]}</b> = ${wc(c)} <b>${s}</b></li></ol>`;
     }
     document.getElementById('r_resFast').innerHTML = fastHTML;
-
     const safeS = s.toLowerCase().replace(/ /g, "_"), safeC = c.toLowerCase().replace(/ /g, "_");
     document.getElementById('plantImg').src = `images/${safeS}_${safeC}.gif`;
     const gi = getGenerationInfo(s);
