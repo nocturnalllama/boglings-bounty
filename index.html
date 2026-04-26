@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Bogling’s Bounty - UO Plant Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/greenthorn.gif" type="image/gif">
+    
+    <style>
+        :root {
+            --bg: #141a11;
+            --panel: #21291d;
+            --border: #5d6d4f;
+            --accent: #d4af37;
+            --text-main: #e0e0e0;
+            --text-muted: #a5b59a;
+            --discord-purple: #9b59b6;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif; 
+            background-color: var(--bg); 
+            background-image: radial-gradient(circle at center, #1b2417 0%, #10150d 100%);
+            color: var(--text-main); 
+            display: flex; 
+            justify-content: center; 
+            padding: 20px; 
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .app-container { 
+            display: flex;
+            gap: 30px;
+            background-color: var(--panel); 
+            border: 2px solid var(--border); 
+            padding: 25px; 
+            width: 1350px; 
+            height: 720px; 
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.5); 
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* CUSTOM GUMP SCROLLBARS */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #141a11; border-radius: 6px; }
+        ::-webkit-scrollbar-thumb { background: #425039; border: 1px solid var(--accent); border-radius: 6px; }
+
+        .controls-panel {
+            flex: 0 0 390px; 
+            display: flex;
+            flex-direction: column;
+            min-width: 0; 
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        h2 { 
+            font-family: 'MedievalSharp', cursive; font-size: 1.7em; color: var(--accent); 
+            border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; margin-bottom: 10px;
+            text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        label { display: block; font-size: 0.8em; margin-top: 10px; margin-bottom: 4px; color: var(--text-muted); font-weight: bold; }
+        select { width: 100%; padding: 10px; background: #0c110a; color: #fff; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95em; cursor: pointer; }
+
+        button.generate-btn { 
+            width: 100%; padding: 12px; margin-top: 15px; background: linear-gradient(to bottom, #526347, #36422f); 
+            color: white; border: 1px solid var(--accent); font-weight: bold; cursor: pointer; 
+            border-radius: 6px; font-size: 1.1em; text-transform: uppercase; transition: all 0.2s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* PROTECTED: RESOURCE SHORTCUTS */
+        .quick-links { margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 12px; }
+        .quick-links h4 { color: var(--accent); margin: 0 0 8px 0; font-size: 1em; text-transform: uppercase; }
+        .resource-row { font-size: 0.82em; margin-bottom: 10px; white-space: nowrap; display: flex; align-items: center; }
+        .resource-icon { max-height: 24px; max-width: 24px; margin-right: 8px; image-rendering: pixelated; }
+        .res-title { font-weight: bold; margin-right: 5px; }
+        .link-btn { background: none; border: none; padding: 0; margin: 0; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 1em; font-family: inherit; transition: color 0.2s; }
+        .link-btn:hover { color: #fff; }
+
+        /* PROTECTED: CARE GUIDE */
+        details.plant-care { margin-top: 15px; background: rgba(12, 17, 10, 0.6); border: 1px solid var(--border); border-radius: 6px; padding: 10px 15px; }
+        details.plant-care summary { font-family: 'MedievalSharp', cursive; color: var(--accent); font-weight: bold; cursor: pointer; outline: none; }
+        .care-list { margin: 10px 0 0 0; padding: 0; list-style: none; font-size: 0.82em; line-height: 1.6; color: #e0e0e0; }
+        .care-list li { display: flex; align-items: center; margin-bottom: 8px; }
+        .status-icon { max-height: 20px; max-width: 20px; margin-right: 8px; image-rendering: pixelated; }
+        .potion-icon { max-height: 20px; max-width: 20px; margin-left: 8px; image-rendering: pixelated; }
+        .potion-text-green { color: #8bc34a; font-weight: bold; margin: 0 4px; }
+        .potion-text-orange { color: #ffa502; font-weight: bold; margin: 0 4px; }
+        .potion-text-yellow { color: #fbc531; font-weight: bold; margin: 0 4px; }
+
+        /* PROTECTED: DISCORD SIGNATURE */
+        .dev-signature {
+            margin-top: auto; padding-top: 15px; display: flex; align-items: center; gap: 10px;
+            background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 8px; border: 1px solid #333; cursor: pointer;
+        }
+        .dev-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--border); object-fit: cover; }
+        .dev-name { font-family: 'MedievalSharp', cursive; color: var(--discord-purple); font-weight: bold; font-size: 1.05em; text-shadow: 0 0 8px rgba(155, 89, 182, 0.4); }
+
+        /* RIGHT PANEL */
+        .results-panel { flex: 1; min-width: 0; background: rgba(12, 17, 10, 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; overflow: hidden; }
+        .visual-display { display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; position: relative; }
+        .image-box { width: 110px; height: 110px; background: #000; border: 2px solid var(--accent); border-radius: 8px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+        .image-box img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+        .target-label { margin-top: 6px; font-size: 0.85em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .badges-container { display: flex; flex-direction: column; gap: 8px; position: absolute; right: 10px; top: 0px; }
+        .generation-badge { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2b1d0f, #140d05); border: 1px solid #c0392b; color: #fff; border-radius: 4px; padding: 4px 8px; font-family: 'MedievalSharp', cursive; font-size: 0.75em; }
+
+        .growth-tracker { display: flex; flex-direction: column; align-items: center; padding-bottom: 12px; border-bottom: 1px dashed var(--border); margin-bottom: 12px; width: 100%; }
+        .tracker-bar { display: flex; width: 100%; background: #000; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; height: 30px; }
+        .tracker-stage { display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 0.65em; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: 1px 1px 2px #000; }
+        .stage-grow { flex: 6; background: linear-gradient(to right, #2c3e50, #2980b9); border-right: 1px solid #000;}
+        .stage-pollinate { flex: 2; background: linear-gradient(to right, #d35400, #f39c12); border-right: 1px solid #000; }
+        .stage-harvest { flex: 1; background: #27ae60; }
+
+        /* SCROLLABLE SECTION */
+        .recipe-list { flex: 1; overflow-y: auto; padding-right: 12px; }
+        .output-title { font-family: 'MedievalSharp', cursive; font-size: 1.05em; color: var(--accent); margin-bottom: 6px; }
+        .output-text { font-size: 0.92em; line-height: 1.7; margin-bottom: 15px; color: #fff; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; border-left: 3px solid var(--accent); }
+
+        details.recipe-dropdown { margin-bottom: 10px; }
+        details.recipe-dropdown summary { font-family: 'MedievalSharp', cursive; font-size: 1.05em; color: var(--text-muted); cursor: pointer; border-bottom: 1px dashed rgba(93, 109, 79, 0.4); padding-bottom: 5px; }
+        details.recipe-dropdown[open] summary { color: var(--accent); border-bottom: none; }
+
+        .fastest-route-box { background: rgba(241, 196, 15, 0.1) !important; border-left: 3px solid #f1c40f !important; white-space: nowrap; box-sizing: border-box; max-width: 100%; }
+        .fastest-route-box ol { margin: 0; padding-left: 20px; }
+
+        .recipe-item { display: block; cursor: help; padding: 4px 5px; margin: 2px 0; border-bottom: 1px dotted rgba(255,255,255,0.2); }
+        .recipe-item:hover { color: var(--accent); background: rgba(255,255,255,0.05); }
+
+        /* PIXEL PERFECT TOOLTIP */
+        .recipe-tooltip { 
+            position: absolute; display: none; background: #0c110a; border: 2px solid var(--accent); 
+            padding: 10px; border-radius: 8px; z-index: 100; pointer-events: none; gap: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.9); align-items: center;
+        }
+        .recipe-tooltip img { 
+            background: #000; border: 1px solid var(--border); 
+            image-rendering: pixelated; 
+            /* Native size - no blur */
+        }
+
+        /* COLORS */
+        .c-plain { color: #dcdde1; font-weight: bold; } .c-red { color: #c0392b; font-weight: bold; }
+        .c-bright-red { color: #ff4757; font-weight: bold; text-shadow: 0 0 6px rgba(255,71,87,0.4); }
+        .c-blue { color: #2980b9; font-weight: bold; } .c-bright-blue { color: #4facfe; font-weight: bold; }
+        .c-yellow { color: #f39c12; font-weight: bold; } .c-bright-yellow { color: #fbc531; font-weight: bold; }
+        .c-orange { color: #d35400; font-weight: bold; } .c-bright-orange { color: #ffa502; font-weight: bold; }
+        .c-green { color: #27ae60; font-weight: bold; } .c-bright-green { color: #2ed573; font-weight: bold; }
+        .c-purple { color: #8e44ad; font-weight: bold; } .c-bright-purple { color: #cd84f1; font-weight: bold; }
+
+        .copy-btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 15px; border-radius: 4px; cursor: pointer; align-self: flex-end; margin-top: 10px; }
+        .copy-btn:hover { background: var(--accent); color: #000; }
+        #resultsArea { opacity: 0; transition: opacity 0.3s ease; position: relative; }
+        #resultsArea.active { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<audio id="sndClick" src="images/click.wav" preload="auto"></audio>
+<audio id="sndPotion" src="images/potion.wav" preload="auto"></audio>
+
+<div id="recipeTooltip" class="recipe-tooltip">
+    <img id="ttImg1" src="" alt="P1"><span style="color:var(--accent); font-weight:bold; font-size:1.5em;">+</span><img id="ttImg2" src="" alt="P2">
+</div>
+
+<div class="app-container">
+    <div class="controls-panel">
+        <h2>The Bogling’s Bounty</h2>
+        <label>TARGET SPECIES</label>
+        <select id="r_s">
+            <optgroup label="Gen 1"><option value="Campion Flowers">Campion Flowers</option><option value="Fern">Fern</option><option value="Tribarrel Cactus">Tribarrel Cactus</option></optgroup>
+            <optgroup label="Higher Gens"><option value="Lilies">Lilies</option><option value="Water Plant">Water Plant</option><option value="Prickly Pear Cactus">Prickly Pear Cactus</option><option value="Rushes">Rushes</option><option value="Small Palm">Small Palm</option><option value="Snowdrops">Snowdrops</option><option value="Barrel Cactus">Barrel Cactus</option><option value="Bulrushes">Bulrushes</option><option value="Century Plant">Century Plant</option><option value="Elephant Ear">Elephant Ear</option><option value="Pampas Grass">Pampas Grass</option><option value="Ponytail Palm">Ponytail Palm</option><option value="Poppies">Poppies</option><option value="Snake Plant">Snake Plant</option></optgroup>
+        </select>
+        <label>TARGET COLOR</label>
+        <select id="r_c">
+            <option value="Plain">Plain</option><option value="Red">Red</option><option value="Blue">Blue</option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="Green">Green</option><option value="Purple">Purple</option><option value="Bright Red">Bright Red</option><option value="Bright Blue">Bright Blue</option><option value="Bright Yellow">Bright Yellow</option><option value="Bright Orange">Bright Orange</option><option value="Bright Green">Bright Green</option><option value="Bright Purple">Bright Purple</option>
+        </select>
+        <button class="generate-btn" onclick="calculateReverse()">Generate Recipe</button>
+
+        <div class="quick-links">
+            <h4>Resource Shortcuts</h4>
+            <div class="resource-row"><img src="images/redleaf.gif" class="resource-icon"><span class="res-title c-red">Red Leaves:</span> <button class="link-btn" onclick="quickSelect('Elephant Ear','Bright Red')">Elephant Ear</button>, &nbsp; <button class="link-btn" onclick="quickSelect('Ponytail Palm','Bright Red')">Ponytail Palm</button>, &nbsp; <button class="link-btn" onclick="quickSelect('Century Plant','Bright Red')">Century Plant</button></div>
+            <div class="resource-row"><img src="images/orangepetals.gif" class="resource-icon"><span class="res-title c-orange">Orange Petals:</span> <button class="link-btn" onclick="quickSelect('Poppies','Bright Orange')">Poppies</button>, &nbsp; <button class="link-btn" onclick="quickSelect('Bulrushes','Bright Orange')">Bulrushes</button>, &nbsp; <button class="link-btn" onclick="quickSelect('Pampas Grass','Bright Orange')">Pampas Grass</button></div>
+            <div class="resource-row"><img src="images/greenthorn.gif" class="resource-icon"><span class="res-title c-green">Green Thorns:</span> <button class="link-btn" onclick="quickSelect('Barrel Cactus','Bright Green')">Barrel Cactus</button>, &nbsp; <button class="link-btn" onclick="quickSelect('Snake Plant','Bright Green')">Snake Plant</button></div>
+        </div>
+
+        <details class="plant-care" id="careGuide">
+            <summary>Plant Care Quick Guide</summary>
+            <ul class="care-list">
+                <li><img src="images/icon_infestation.png" class="status-icon"> <b>Infestation:</b> Use <span class="potion-text-green">Greater Poison</span> <img src="images/green_potion.gif" class="potion-icon"></li>
+                <li><img src="images/icon_fungus.png" class="status-icon"> <b>Fungus:</b> Use <span class="potion-text-orange">Greater Cure</span> <img src="images/orange_potion.gif" class="potion-icon"></li>
+                <li><img src="images/icon_poison.png" class="status-icon"> <b>Poisoned:</b> Use <span class="potion-text-yellow">Greater Heal</span> <img src="images/yellow_potion.gif" class="potion-icon"></li>
+                <li><i>Use <span style="color:#fff; font-weight:bold;">Greater Strength</span> to lower infestation chance!</i></li>
+            </ul>
+        </details>
+
+        <div class="dev-signature" onclick="copyDiscordID()" title="Click to Copy Discord ID">
+            <img src="https://cdn.discordapp.com/avatars/129427939858055169/6aee5287a23ef5ebd904d0eae05e0ca2.webp?size=128" class="dev-avatar">
+            <div class="dev-info"><div class="dev-name">NocturnalLlama</div><div id="devIDLabel" style="font-size:0.72em; color:var(--text-muted);">Copy Dev Discord ID</div></div>
+        </div>
+    </div>
+
+    <div class="results-panel" id="resultsArea">
+        <div class="visual-display">
+            <div class="image-box"><img id="plantImg" src=""></div>
+            <div id="targetText" class="target-label"></div>
+            <div class="badges-container"><div id="genBadge" class="generation-badge"></div></div>
+        </div>
+        <div class="growth-tracker">
+            <div class="tracker-bar"><div class="stage-grow tracker-stage">D1-6 GROW</div><div class="stage-pollinate tracker-stage">D7-8 POLLEN</div><div class="stage-harvest tracker-stage">D9 HARVEST</div></div>
+        </div>
+        <div class="recipe-list">
+            <div class="output-title">Fastest Step-By-Step Path:</div>
+            <div id="r_resFast" class="output-text fastest-route-box"></div>
+            <details class="recipe-dropdown"><summary>View All Species Crosses</summary><div id="r_resS" class="output-text" style="background:transparent; border:none;"></div></details>
+            <details class="recipe-dropdown"><summary>View All Valid Color Parents</summary><div id="r_resC" class="output-text" style="background:transparent; border:none;"></div></details>
+        </div>
+        <button id="copyBtn" class="copy-btn" onclick="copyQuickRecipe()">Copy Full Path</button>
+    </div>
+</div>
+
+<script>
+function playClick() { let a = document.getElementById('sndClick'); if(a) a.play().catch(e=>{}); }
+function playPotion() { let a = document.getElementById('sndPotion'); if(a) a.play().catch(e=>{}); }
+document.getElementById('careGuide').addEventListener('toggle', function() { if (this.open) playPotion(); });
+
+function wc(c) { return `<span class="c-${c.toLowerCase().replace(" ", "-")}">${c}</span>`; }
+
+const uoPlants = { 1: "Campion Flowers", 2: "Snowdrops", 3: "Poppies", 4: "Bulrushes", 5: "Lilies", 6: "Pampas Grass", 7: "Rushes", 8: "Elephant Ear", 9: "Fern", 10: "Ponytail Palm", 11: "Small Palm", 12: "Century Plant", 13: "Water Plant", 14: "Snake Plant", 15: "Prickly Pear Cactus", 16: "Barrel Cactus", 17: "Tribarrel Cactus" };
+
+const colorRecipes = {
+    "Plain": ["Plain + Any Color", "Gathered as Base Seed"],
+    "Red": ["Red + Purple", "Red + Orange", "Red + Green", "Gathered as Base Seed"],
+    "Blue": ["Blue + Purple", "Blue + Green", "Blue + Orange", "Gathered as Base Seed"],
+    "Yellow": ["Yellow + Orange", "Yellow + Green", "Yellow + Purple", "Gathered as Base Seed"],
+    "Purple": ["Red + Blue", "Bright Red + Blue", "Red + Bright Blue", "Bright Red + Bright Blue"],
+    "Green": ["Blue + Yellow", "Bright Blue + Yellow", "Blue + Bright Yellow", "Bright Blue + Bright Yellow"],
+    "Orange": ["Red + Yellow", "Bright Red + Yellow", "Red + Bright Yellow", "Bright Red + Bright Yellow"],
+    "Bright Red": ["Red + Red", "Red + Bright Red", "Bright Red + Bright Red"],
+    "Bright Blue": ["Blue + Blue", "Blue + Bright Blue", "Bright Blue + Bright Blue"],
+    "Bright Yellow": ["Yellow + Yellow", "Yellow + Bright Yellow", "Bright Yellow + Bright Yellow"],
+    "Bright Orange": ["Orange + Orange", "Orange + Bright Orange", "Bright Orange + Bright Orange"],
+    "Bright Green": ["Green + Green", "Green + Bright Green", "Bright Green + Bright Green"],
+    "Bright Purple": ["Purple + Purple", "Purple + Bright Purple", "Bright Purple + Bright Purple"]
+};
+
+const speciesPathMap = {
+    "Campion Flowers": [], "Fern": [], "Tribarrel Cactus": [],
+    "Lilies": ["Campion Flowers/Fern seeds via bogling"],
+    "Water Plant": ["Fern/Tribarrel Cactus seeds via bogling"],
+    "Poppies": ["Campion Flowers/Fern seeds via bogling", "Campion Flowers x Fern = Lilies"],
+    "Rushes": ["Campion Flowers/Fern seeds via bogling", "Campion Flowers x Fern = Lilies"],
+    "Small Palm": ["Fern/Tribarrel Cactus seeds via bogling", "Fern x Tribarrel Cactus = Water Plant"],
+    "Prickly Pear Cactus": ["Fern/Tribarrel Cactus seeds via bogling", "Fern x Tribarrel Cactus = Water Plant"],
+    "Snowdrops": ["Campion Flowers/Fern via bogling", "Campion Flowers x Fern = Lilies", "Lilies x Campion Flowers = Poppies"],
+    "Bulrushes": ["Campion Flowers/Fern via bogling", "Campion Flowers x Fern = Lilies", "Lilies x Campion Flowers = Poppies"],
+    "Pampas Grass": ["Campion Flowers/Fern via bogling", "Campion Flowers x Fern = Lilies", "Lilies x Fern = Rushes"],
+    "Elephant Ear": ["Campion Flowers/Fern via bogling", "Campion Flowers x Fern = Lilies", "Lilies x Fern = Rushes"],
+    "Ponytail Palm": ["Fern/Tribarrel via bogling", "Fern x Tribarrel = Water Plant", "Water Plant x Fern = Small Palm"],
+    "Century Plant": ["Fern/Tribarrel via bogling", "Fern x Tribarrel = Water Plant", "Water Plant x Fern = Small Palm"],
+    "Snake Plant": ["Fern/Tribarrel via bogling", "Fern x Tribarrel = Water Plant", "Water Plant x Tribarrel Cactus = Prickly Pear Cactus"],
+    "Barrel Cactus": ["Fern/Tribarrel via bogling", "Fern x Tribarrel = Water Plant", "Water Plant x Tribarrel Cactus = Prickly Pear Cactus"]
+};
+
+const lastStepMap = {
+    "Snowdrops": ["Poppies", "Campion Flowers"], "Bulrushes": ["Poppies", "Lilies"], "Pampas Grass": ["Rushes", "Lilies"], "Elephant Ear": ["Rushes", "Fern"],
+    "Ponytail Palm": ["Small Palm", "Fern"], "Century Plant": ["Small Palm", "Water Plant"], "Snake Plant": ["Prickly Pear Cactus", "Water Plant"], "Barrel Cactus": ["Prickly Pear Cactus", "Tribarrel Cactus"]
+};
+
+function getGenerationInfo(s) {
+    const g1 = ["Campion Flowers", "Fern", "Tribarrel Cactus"], g2 = ["Lilies", "Water Plant"], g3 = ["Prickly Pear Cactus", "Rushes", "Small Palm", "Snowdrops"];
+    if (g1.includes(s)) return { text: "Generation 1", color: "#cd7f32", genNum: 1 }; 
+    if (g2.includes(s)) return { text: "Generation 2", color: "#bdc3c7", genNum: 2 }; 
+    if (g3.includes(s)) return { text: "Generation 3", color: "#f1c40f", genNum: 3 }; 
+    return { text: "Generation 4", color: "#e74c3c", genNum: 4 }; 
+}
+
+const fastColorMap = {"Plain":["Plain","Plain"],"Red":["Red","Purple"],"Blue":["Blue","Purple"],"Yellow":["Yellow","Orange"],"Purple":["Red","Blue"],"Green":["Blue","Yellow"],"Orange":["Red","Yellow"],"Bright Red":["Red","Red"],"Bright Blue":["Blue","Blue"],"Bright Yellow":["Yellow","Yellow"],"Bright Orange":["Orange","Orange"],"Bright Green":["Green","Green"],"Bright Purple":["Purple","Purple"]};
+
+function getSpeciesRecipes(targetName) {
+    let targetId = 0; for (let id in uoPlants) { if (uoPlants[id] === targetName) { targetId = parseInt(id); break; } }
+    let recipes = [];
+    for (let i = 1; i <= 17; i++) {
+        for (let j = i; j <= 17; j++) {
+            if ((i + j) / 2 === targetId) {
+                recipes.push(`<span class="recipe-item" data-p1="${uoPlants[i]}" data-p2="${uoPlants[j]}">&bull; ${uoPlants[i]} + ${uoPlants[j]}</span>`);
+            }
+        }
+    }
+    return recipes.join("");
+}
+
+function calculateReverse(isAutoLoad = false) {
+    if(!isAutoLoad) playClick();
+    const s = document.getElementById('r_s').value, c = document.getElementById('r_c').value;
+    document.getElementById('r_resS').innerHTML = getSpeciesRecipes(s);
+    let cList = colorRecipes[c].map(recipe => {
+        let parts = recipe.split(" + ");
+        if (parts.length === 2) return `<span class="recipe-item">&bull; ${wc(parts[0])} + ${wc(parts[1])}</span>`;
+        return `<span class="recipe-item">&bull; ${recipe}</span>`;
+    }).join("");
+    document.getElementById('r_resC').innerHTML = cList;
+    document.getElementById('targetText').innerHTML = `${wc(c)} ${s}`;
+    let path = speciesPathMap[s], fastHTML = "";
+    if (!path.length) {
+        fastHTML = ["Plain","Red","Blue","Yellow"].includes(c) ? `⭐ ${wc(c)} <b>${s}</b> seed via bogling` : `${wc(fastColorMap[c][0])} <b>${s}</b> x ${wc(fastColorMap[c][1])} <b>${s}</b> = ${wc(c)} <b>${s}</b>`;
+    } else {
+        fastHTML = `<ol>`;
+        path.forEach(step => fastHTML += `<li>${step}</li>`);
+        let clrs = fastColorMap[c], prnts = [];
+        if (getGenerationInfo(s).genNum === 2) { prnts = (s === "Lilies") ? ["Campion Flowers", "Fern"] : ["Fern", "Tribarrel Cactus"]; }
+        else if (getGenerationInfo(s).genNum === 3) {
+            if (s === "Poppies") prnts = ["Lilies", "Campion Flowers"];
+            else if (s === "Rushes") prnts = ["Lilies", "Fern"];
+            else if (s === "Small Palm") prnts = ["Water Plant", "Fern"];
+            else prnts = ["Water Plant", "Tribarrel Cactus"];
+        } else { prnts = lastStepMap[s]; }
+        fastHTML += `<li>${wc(clrs[0])} <b>${prnts[0]}</b> x ${wc(clrs[1])} <b>${prnts[1]}</b> = ${wc(c)} <b>${s}</b></li></ol>`;
+    }
+    document.getElementById('r_resFast').innerHTML = fastHTML;
+    const safeS = s.toLowerCase().replace(/ /g, "_"), safeC = c.toLowerCase().replace(/ /g, "_");
+    document.getElementById('plantImg').src = `images/${safeS}_${safeC}.gif`;
+    const gi = getGenerationInfo(s);
+    document.getElementById('genBadge').innerText = gi.text;
+    document.getElementById('genBadge').style.color = gi.color;
+    document.getElementById('resultsArea').classList.add('active');
+}
+
+function quickSelect(s, c) { document.getElementById('r_s').value = s; document.getElementById('r_c').value = c; calculateReverse(); }
+function copyQuickRecipe() { playClick(); navigator.clipboard.writeText(document.getElementById('r_resFast').innerText.replace(/<[^>]*>/g, '')); }
+function copyDiscordID() { playClick(); navigator.clipboard.writeText('129427939858055169').then(() => {
+    const label = document.getElementById('devIDLabel'); const old = label.innerText;
+    label.innerText = "✓ ID Copied!"; label.style.color = "#2ed573";
+    setTimeout(() => { label.innerText = old; label.style.color = ""; }, 2000);
+}); }
+
+const speciesList = document.getElementById('r_resS');
+const tooltip = document.getElementById('recipeTooltip');
+speciesList.addEventListener('mouseover', e => {
+    let item = e.target.closest('.recipe-item');
+    if(item) {
+        const p1 = item.getAttribute('data-p1'), p2 = item.getAttribute('data-p2');
+        if(p1 && p2) {
+            document.getElementById('ttImg1').src = `images/${p1.toLowerCase().replace(/ /g, "_")}_plain.gif`;
+            document.getElementById('ttImg2').src = `images/${p2.toLowerCase().replace(/ /g, "_")}_plain.gif`;
+            tooltip.style.display = 'flex';
+        }
+    }
+});
+speciesList.addEventListener('mousemove', e => { tooltip.style.left = (e.pageX + 15) + 'px'; tooltip.style.top = (e.pageY + 15) + 'px'; });
+speciesList.addEventListener('mouseout', () => tooltip.style.display = 'none');
+
+window.onload = () => calculateReverse(true);
+</script>
+</body>
+</html>
